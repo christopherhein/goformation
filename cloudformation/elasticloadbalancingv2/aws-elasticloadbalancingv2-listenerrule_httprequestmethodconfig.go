@@ -21,6 +21,19 @@ type ListenerRule_HttpRequestMethodConfig struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *ListenerRule_HttpRequestMethodConfig) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *ListenerRule_HttpRequestMethodConfig) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -40,15 +53,15 @@ func (r *ListenerRule_HttpRequestMethodConfig) SetDependsOn(dependencies []strin
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *ListenerRule_HttpRequestMethodConfig) Metadata() map[string]interface{} {
+func (r *ListenerRule_HttpRequestMethodConfig) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *ListenerRule_HttpRequestMethodConfig) SetMetadata(metadata map[string]interface{}) {
+func (r *ListenerRule_HttpRequestMethodConfig) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

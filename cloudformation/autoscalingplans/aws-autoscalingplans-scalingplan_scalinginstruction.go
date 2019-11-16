@@ -86,6 +86,19 @@ type ScalingPlan_ScalingInstruction struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *ScalingPlan_ScalingInstruction) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *ScalingPlan_ScalingInstruction) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -105,15 +118,15 @@ func (r *ScalingPlan_ScalingInstruction) SetDependsOn(dependencies []string) {
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *ScalingPlan_ScalingInstruction) Metadata() map[string]interface{} {
+func (r *ScalingPlan_ScalingInstruction) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *ScalingPlan_ScalingInstruction) SetMetadata(metadata map[string]interface{}) {
+func (r *ScalingPlan_ScalingInstruction) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

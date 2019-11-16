@@ -141,20 +141,28 @@ func NewTemplate() *Template {
 
 // JSON converts an AWS CloudFormation template object to JSON
 func (t *Template) JSON() ([]byte, error) {
+	return t.JSONWithOptions(nil)
+}
+
+// JSONWithOption converts AWS CloudFormation template object to json with options
+func (t *Template) JSONWithOptions(options *intrinsics.ProcessorOptions) ([]byte, error) {
 
 	j, err := json.MarshalIndent(t, "", "  ")
 	if err != nil {
 		return nil, err
 	}
 
-	return intrinsics.ProcessJSON(j, nil)
-
+	return intrinsics.ProcessJSON(j, options)
 }
 
 // YAML converts an AWS CloudFormation template object to YAML
 func (t *Template) YAML() ([]byte, error) {
+	return t.YAMLWithOptions(nil)
+}
 
-	j, err := t.JSON()
+// YAML converts an AWS CloudFormation template object to YAML with options
+func (t *Template) YAMLWithOptions(options *intrinsics.ProcessorOptions) ([]byte, error) {
+	j, err := t.JSONWithOptions(options)
 	if err != nil {
 		return nil, err
 	}

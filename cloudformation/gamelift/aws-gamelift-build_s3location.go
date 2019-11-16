@@ -18,6 +18,11 @@ type Build_S3Location struct {
 	// See: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-gamelift-build-storagelocation.html#cfn-gamelift-build-storage-key
 	Key string `json:"Key,omitempty"`
 
+	// ObjectVersion AWS CloudFormation Property
+	// Required: false
+	// See: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-gamelift-build-storagelocation.html#cfn-gamelift-build-object-verison
+	ObjectVersion string `json:"ObjectVersion,omitempty"`
+
 	// RoleArn AWS CloudFormation Property
 	// Required: true
 	// See: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-gamelift-build-storagelocation.html#cfn-gamelift-build-storage-rolearn
@@ -31,6 +36,19 @@ type Build_S3Location struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *Build_S3Location) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *Build_S3Location) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -50,15 +68,15 @@ func (r *Build_S3Location) SetDependsOn(dependencies []string) {
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *Build_S3Location) Metadata() map[string]interface{} {
+func (r *Build_S3Location) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *Build_S3Location) SetMetadata(metadata map[string]interface{}) {
+func (r *Build_S3Location) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

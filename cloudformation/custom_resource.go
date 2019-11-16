@@ -38,15 +38,15 @@ func (r *CustomResource) SetDependsOn(dependencies []string) {
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *CustomResource) Metadata() map[string]interface{} {
+func (r *CustomResource) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *CustomResource) SetMetadata(metadata map[string]interface{}) {
+func (r *CustomResource) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

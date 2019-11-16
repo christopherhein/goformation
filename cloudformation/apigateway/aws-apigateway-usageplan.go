@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/awslabs/goformation/v3/cloudformation/policies"
+	"github.com/awslabs/goformation/v3/cloudformation/tags"
 )
 
 // UsagePlan AWS CloudFormation Resource (AWS::ApiGateway::UsagePlan)
@@ -27,6 +28,11 @@ type UsagePlan struct {
 	// See: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-usageplan.html#cfn-apigateway-usageplan-quota
 	Quota *UsagePlan_QuotaSettings `json:"Quota,omitempty"`
 
+	// Tags AWS CloudFormation Property
+	// Required: false
+	// See: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-usageplan.html#cfn-apigateway-usageplan-tags
+	Tags []tags.Tag `json:"Tags,omitempty"`
+
 	// Throttle AWS CloudFormation Property
 	// Required: false
 	// See: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-usageplan.html#cfn-apigateway-usageplan-throttle
@@ -45,6 +51,19 @@ type UsagePlan struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *UsagePlan) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *UsagePlan) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -64,15 +83,15 @@ func (r *UsagePlan) SetDependsOn(dependencies []string) {
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *UsagePlan) Metadata() map[string]interface{} {
+func (r *UsagePlan) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *UsagePlan) SetMetadata(metadata map[string]interface{}) {
+func (r *UsagePlan) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 
@@ -95,12 +114,14 @@ func (r UsagePlan) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type           string
 		Properties     Properties
+		Condition      string                  `json:"Condition,omitempty"`
 		DependsOn      []string                `json:"DependsOn,omitempty"`
 		Metadata       map[string]interface{}  `json:"Metadata,omitempty"`
 		DeletionPolicy policies.DeletionPolicy `json:"DeletionPolicy,omitempty"`
 	}{
 		Type:           r.AWSCloudFormationType(),
 		Properties:     (Properties)(r),
+		Condition:      r._resourceCondition,
 		DependsOn:      r._dependsOn,
 		Metadata:       r._metadata,
 		DeletionPolicy: r._deletionPolicy,
@@ -114,6 +135,7 @@ func (r *UsagePlan) UnmarshalJSON(b []byte) error {
 	res := &struct {
 		Type           string
 		Properties     *Properties
+		Condition      string `json:"Condition,omitempty"`
 		DependsOn      []string
 		Metadata       map[string]interface{}
 		DeletionPolicy string
@@ -130,6 +152,9 @@ func (r *UsagePlan) UnmarshalJSON(b []byte) error {
 	// If the resource has no Properties set, it could be nil
 	if res.Properties != nil {
 		*r = UsagePlan(*res.Properties)
+	}
+	if res.Condition != "" {
+		r._resourceCondition = res.Condition
 	}
 	if res.DependsOn != nil {
 		r._dependsOn = res.DependsOn

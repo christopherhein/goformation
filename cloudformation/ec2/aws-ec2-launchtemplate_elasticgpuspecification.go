@@ -21,6 +21,19 @@ type LaunchTemplate_ElasticGpuSpecification struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *LaunchTemplate_ElasticGpuSpecification) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *LaunchTemplate_ElasticGpuSpecification) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -40,15 +53,15 @@ func (r *LaunchTemplate_ElasticGpuSpecification) SetDependsOn(dependencies []str
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *LaunchTemplate_ElasticGpuSpecification) Metadata() map[string]interface{} {
+func (r *LaunchTemplate_ElasticGpuSpecification) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *LaunchTemplate_ElasticGpuSpecification) SetMetadata(metadata map[string]interface{}) {
+func (r *LaunchTemplate_ElasticGpuSpecification) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

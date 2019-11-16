@@ -49,9 +49,9 @@ func (r *Tag) Metadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *Tag) SetMetadata(metadata map[string]interface{}) {
+func (r *Tag) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

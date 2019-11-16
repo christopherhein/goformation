@@ -506,11 +506,17 @@ var CloudformationSchema = `{
                 "EnableAutoBuild": {
                     "type": "boolean"
                 },
+                "EnablePullRequestPreview": {
+                    "type": "boolean"
+                },
                 "EnvironmentVariables": {
                     "items": {
                         "$ref": "#/definitions/AWS::Amplify::App.EnvironmentVariable"
                     },
                     "type": "array"
+                },
+                "PullRequestEnvironmentName": {
+                    "type": "string"
                 },
                 "Stage": {
                     "type": "string"
@@ -621,11 +627,17 @@ var CloudformationSchema = `{
                         "EnableAutoBuild": {
                             "type": "boolean"
                         },
+                        "EnablePullRequestPreview": {
+                            "type": "boolean"
+                        },
                         "EnvironmentVariables": {
                             "items": {
                                 "$ref": "#/definitions/AWS::Amplify::Branch.EnvironmentVariable"
                             },
                             "type": "array"
+                        },
+                        "PullRequestEnvironmentName": {
+                            "type": "string"
                         },
                         "Stage": {
                             "type": "string"
@@ -875,6 +887,12 @@ var CloudformationSchema = `{
                             },
                             "type": "array"
                         },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            },
+                            "type": "array"
+                        },
                         "Value": {
                             "type": "string"
                         }
@@ -1087,6 +1105,12 @@ var CloudformationSchema = `{
                     "properties": {
                         "Description": {
                             "type": "string"
+                        },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            },
+                            "type": "array"
                         }
                     },
                     "type": "object"
@@ -1521,6 +1545,15 @@ var CloudformationSchema = `{
                         },
                         "RegionalCertificateArn": {
                             "type": "string"
+                        },
+                        "SecurityPolicy": {
+                            "type": "string"
+                        },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            },
+                            "type": "array"
                         }
                     },
                     "required": [
@@ -2141,6 +2174,12 @@ var CloudformationSchema = `{
                         },
                         "Policy": {
                             "type": "object"
+                        },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            },
+                            "type": "array"
                         }
                     },
                     "type": "object"
@@ -2407,6 +2446,12 @@ var CloudformationSchema = `{
                         },
                         "Quota": {
                             "$ref": "#/definitions/AWS::ApiGateway::UsagePlan.QuotaSettings"
+                        },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            },
+                            "type": "array"
                         },
                         "Throttle": {
                             "$ref": "#/definitions/AWS::ApiGateway::UsagePlan.ThrottleSettings"
@@ -3672,6 +3717,131 @@ var CloudformationSchema = `{
             ],
             "type": "object"
         },
+        "AWS::AppMesh::Route.GrpcRetryPolicy": {
+            "additionalProperties": false,
+            "properties": {
+                "GrpcRetryEvents": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "HttpRetryEvents": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "MaxRetries": {
+                    "type": "number"
+                },
+                "PerRetryTimeout": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.Duration"
+                },
+                "TcpRetryEvents": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "MaxRetries",
+                "PerRetryTimeout"
+            ],
+            "type": "object"
+        },
+        "AWS::AppMesh::Route.GrpcRoute": {
+            "additionalProperties": false,
+            "properties": {
+                "Action": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.GrpcRouteAction"
+                },
+                "Match": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.GrpcRouteMatch"
+                },
+                "RetryPolicy": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.GrpcRetryPolicy"
+                }
+            },
+            "required": [
+                "Action",
+                "Match"
+            ],
+            "type": "object"
+        },
+        "AWS::AppMesh::Route.GrpcRouteAction": {
+            "additionalProperties": false,
+            "properties": {
+                "WeightedTargets": {
+                    "items": {
+                        "$ref": "#/definitions/AWS::AppMesh::Route.WeightedTarget"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "WeightedTargets"
+            ],
+            "type": "object"
+        },
+        "AWS::AppMesh::Route.GrpcRouteMatch": {
+            "additionalProperties": false,
+            "properties": {
+                "Metadata": {
+                    "items": {
+                        "$ref": "#/definitions/AWS::AppMesh::Route.GrpcRouteMetadata"
+                    },
+                    "type": "array"
+                },
+                "MethodName": {
+                    "type": "string"
+                },
+                "ServiceName": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::AppMesh::Route.GrpcRouteMetadata": {
+            "additionalProperties": false,
+            "properties": {
+                "Invert": {
+                    "type": "boolean"
+                },
+                "Match": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.GrpcRouteMetadataMatchMethod"
+                },
+                "Name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Name"
+            ],
+            "type": "object"
+        },
+        "AWS::AppMesh::Route.GrpcRouteMetadataMatchMethod": {
+            "additionalProperties": false,
+            "properties": {
+                "Exact": {
+                    "type": "string"
+                },
+                "Prefix": {
+                    "type": "string"
+                },
+                "Range": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.MatchRange"
+                },
+                "Regex": {
+                    "type": "string"
+                },
+                "Suffix": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "AWS::AppMesh::Route.HeaderMatchMethod": {
             "additionalProperties": false,
             "properties": {
@@ -3816,6 +3986,12 @@ var CloudformationSchema = `{
         "AWS::AppMesh::Route.RouteSpec": {
             "additionalProperties": false,
             "properties": {
+                "GrpcRoute": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.GrpcRoute"
+                },
+                "Http2Route": {
+                    "$ref": "#/definitions/AWS::AppMesh::Route.HttpRoute"
+                },
                 "HttpRoute": {
                     "$ref": "#/definitions/AWS::AppMesh::Route.HttpRoute"
                 },
@@ -4620,6 +4796,12 @@ var CloudformationSchema = `{
                 "Properties": {
                     "additionalProperties": false,
                     "properties": {
+                        "AccessEndpoints": {
+                            "items": {
+                                "$ref": "#/definitions/AWS::AppStream::ImageBuilder.AccessEndpoint"
+                            },
+                            "type": "array"
+                        },
                         "AppstreamAgentVersion": {
                             "type": "string"
                         },
@@ -4672,6 +4854,22 @@ var CloudformationSchema = `{
             "required": [
                 "Type",
                 "Properties"
+            ],
+            "type": "object"
+        },
+        "AWS::AppStream::ImageBuilder.AccessEndpoint": {
+            "additionalProperties": false,
+            "properties": {
+                "EndpointType": {
+                    "type": "string"
+                },
+                "VpceId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "EndpointType",
+                "VpceId"
             ],
             "type": "object"
         },
@@ -4737,6 +4935,12 @@ var CloudformationSchema = `{
                 "Properties": {
                     "additionalProperties": false,
                     "properties": {
+                        "AccessEndpoints": {
+                            "items": {
+                                "$ref": "#/definitions/AWS::AppStream::Stack.AccessEndpoint"
+                            },
+                            "type": "array"
+                        },
                         "ApplicationSettings": {
                             "$ref": "#/definitions/AWS::AppStream::Stack.ApplicationSettings"
                         },
@@ -4754,6 +4958,12 @@ var CloudformationSchema = `{
                         },
                         "DisplayName": {
                             "type": "string"
+                        },
+                        "EmbedHostDomains": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
                         },
                         "FeedbackURL": {
                             "type": "string"
@@ -4794,6 +5004,22 @@ var CloudformationSchema = `{
             },
             "required": [
                 "Type"
+            ],
+            "type": "object"
+        },
+        "AWS::AppStream::Stack.AccessEndpoint": {
+            "additionalProperties": false,
+            "properties": {
+                "EndpointType": {
+                    "type": "string"
+                },
+                "VpceId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "EndpointType",
+                "VpceId"
             ],
             "type": "object"
         },
@@ -11188,6 +11414,12 @@ var CloudformationSchema = `{
                         "Settings": {
                             "$ref": "#/definitions/AWS::CodePipeline::CustomActionType.Settings"
                         },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            },
+                            "type": "array"
+                        },
                         "Version": {
                             "type": "string"
                         }
@@ -11340,6 +11572,12 @@ var CloudformationSchema = `{
                         "Stages": {
                             "items": {
                                 "$ref": "#/definitions/AWS::CodePipeline::Pipeline.StageDeclaration"
+                            },
+                            "type": "array"
+                        },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
                             },
                             "type": "array"
                         }
@@ -11772,6 +12010,100 @@ var CloudformationSchema = `{
                 "Bucket",
                 "Key"
             ],
+            "type": "object"
+        },
+        "AWS::CodeStarNotifications::NotificationRule": {
+            "additionalProperties": false,
+            "properties": {
+                "DeletionPolicy": {
+                    "enum": [
+                        "Delete",
+                        "Retain",
+                        "Snapshot"
+                    ],
+                    "type": "string"
+                },
+                "DependsOn": {
+                    "anyOf": [
+                        {
+                            "pattern": "^[a-zA-Z0-9]+$",
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "pattern": "^[a-zA-Z0-9]+$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "Metadata": {
+                    "type": "object"
+                },
+                "Properties": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "DetailType": {
+                            "type": "string"
+                        },
+                        "EventTypeIds": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "Name": {
+                            "type": "string"
+                        },
+                        "Resource": {
+                            "type": "string"
+                        },
+                        "Status": {
+                            "type": "string"
+                        },
+                        "Tags": {
+                            "type": "object"
+                        },
+                        "Targets": {
+                            "items": {
+                                "$ref": "#/definitions/AWS::CodeStarNotifications::NotificationRule.Target"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "DetailType",
+                        "EventTypeIds",
+                        "Name",
+                        "Resource",
+                        "Targets"
+                    ],
+                    "type": "object"
+                },
+                "Type": {
+                    "enum": [
+                        "AWS::CodeStarNotifications::NotificationRule"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type",
+                "Properties"
+            ],
+            "type": "object"
+        },
+        "AWS::CodeStarNotifications::NotificationRule.Target": {
+            "additionalProperties": false,
+            "properties": {
+                "TargetAddress": {
+                    "type": "string"
+                },
+                "TargetType": {
+                    "type": "string"
+                }
+            },
             "type": "object"
         },
         "AWS::Cognito::IdentityPool": {
@@ -21861,6 +22193,12 @@ var CloudformationSchema = `{
                         "Family": {
                             "type": "string"
                         },
+                        "InferenceAccelerators": {
+                            "items": {
+                                "$ref": "#/definitions/AWS::ECS::TaskDefinition.InferenceAccelerator"
+                            },
+                            "type": "array"
+                        },
                         "IpcMode": {
                             "type": "string"
                         },
@@ -22206,6 +22544,18 @@ var CloudformationSchema = `{
             "additionalProperties": false,
             "properties": {
                 "SourcePath": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::ECS::TaskDefinition.InferenceAccelerator": {
+            "additionalProperties": false,
+            "properties": {
+                "DeviceName": {
+                    "type": "string"
+                },
+                "DeviceType": {
                     "type": "string"
                 }
             },
@@ -26432,6 +26782,15 @@ var CloudformationSchema = `{
                         "EncryptionAtRestOptions": {
                             "$ref": "#/definitions/AWS::Elasticsearch::Domain.EncryptionAtRestOptions"
                         },
+                        "LogPublishingOptions": {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                "^[a-zA-Z0-9]+$": {
+                                    "$ref": "#/definitions/AWS::Elasticsearch::Domain.LogPublishingOption"
+                                }
+                            },
+                            "type": "object"
+                        },
                         "NodeToNodeEncryptionOptions": {
                             "$ref": "#/definitions/AWS::Elasticsearch::Domain.NodeToNodeEncryptionOptions"
                         },
@@ -26515,6 +26874,18 @@ var CloudformationSchema = `{
                 },
                 "KmsKeyId": {
                     "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::Elasticsearch::Domain.LogPublishingOption": {
+            "additionalProperties": false,
+            "properties": {
+                "CloudWatchLogsLogGroupArn": {
+                    "type": "string"
+                },
+                "Enabled": {
+                    "type": "boolean"
                 }
             },
             "type": "object"
@@ -26739,6 +27110,9 @@ var CloudformationSchema = `{
                         "Description": {
                             "type": "string"
                         },
+                        "EventBusName": {
+                            "type": "string"
+                        },
                         "EventPattern": {
                             "type": "object"
                         },
@@ -26797,6 +27171,46 @@ var CloudformationSchema = `{
             "required": [
                 "Subnets"
             ],
+            "type": "object"
+        },
+        "AWS::Events::Rule.BatchArrayProperties": {
+            "additionalProperties": false,
+            "properties": {
+                "Size": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::Events::Rule.BatchParameters": {
+            "additionalProperties": false,
+            "properties": {
+                "ArrayProperties": {
+                    "$ref": "#/definitions/AWS::Events::Rule.BatchArrayProperties"
+                },
+                "JobDefinition": {
+                    "type": "string"
+                },
+                "JobName": {
+                    "type": "string"
+                },
+                "RetryStrategy": {
+                    "$ref": "#/definitions/AWS::Events::Rule.BatchRetryStrategy"
+                }
+            },
+            "required": [
+                "JobDefinition",
+                "JobName"
+            ],
+            "type": "object"
+        },
+        "AWS::Events::Rule.BatchRetryStrategy": {
+            "additionalProperties": false,
+            "properties": {
+                "Attempts": {
+                    "type": "number"
+                }
+            },
             "type": "object"
         },
         "AWS::Events::Rule.EcsParameters": {
@@ -26919,6 +27333,9 @@ var CloudformationSchema = `{
             "properties": {
                 "Arn": {
                     "type": "string"
+                },
+                "BatchParameters": {
+                    "$ref": "#/definitions/AWS::Events::Rule.BatchParameters"
                 },
                 "EcsParameters": {
                     "$ref": "#/definitions/AWS::Events::Rule.EcsParameters"
@@ -27228,6 +27645,9 @@ var CloudformationSchema = `{
                         "Name": {
                             "type": "string"
                         },
+                        "OperatingSystem": {
+                            "type": "string"
+                        },
                         "StorageLocation": {
                             "$ref": "#/definitions/AWS::GameLift::Build.S3Location"
                         },
@@ -27256,6 +27676,9 @@ var CloudformationSchema = `{
                     "type": "string"
                 },
                 "Key": {
+                    "type": "string"
+                },
+                "ObjectVersion": {
                     "type": "string"
                 },
                 "RoleArn": {
@@ -27304,6 +27727,9 @@ var CloudformationSchema = `{
                         "BuildId": {
                             "type": "string"
                         },
+                        "CertificateConfiguration": {
+                            "$ref": "#/definitions/AWS::GameLift::Fleet.CertificateConfiguration"
+                        },
                         "Description": {
                             "type": "string"
                         },
@@ -27319,6 +27745,12 @@ var CloudformationSchema = `{
                         "EC2InstanceType": {
                             "type": "string"
                         },
+                        "FleetType": {
+                            "type": "string"
+                        },
+                        "InstanceRoleARN": {
+                            "type": "string"
+                        },
                         "LogPaths": {
                             "items": {
                                 "type": "string"
@@ -27328,10 +27760,34 @@ var CloudformationSchema = `{
                         "MaxSize": {
                             "type": "number"
                         },
+                        "MetricGroups": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
                         "MinSize": {
                             "type": "number"
                         },
                         "Name": {
+                            "type": "string"
+                        },
+                        "NewGameSessionProtectionPolicy": {
+                            "type": "string"
+                        },
+                        "PeerVpcAwsAccountId": {
+                            "type": "string"
+                        },
+                        "PeerVpcId": {
+                            "type": "string"
+                        },
+                        "ResourceCreationLimitPolicy": {
+                            "$ref": "#/definitions/AWS::GameLift::Fleet.ResourceCreationLimitPolicy"
+                        },
+                        "RuntimeConfiguration": {
+                            "$ref": "#/definitions/AWS::GameLift::Fleet.RuntimeConfiguration"
+                        },
+                        "ScriptId": {
                             "type": "string"
                         },
                         "ServerLaunchParameters": {
@@ -27342,11 +27798,8 @@ var CloudformationSchema = `{
                         }
                     },
                     "required": [
-                        "BuildId",
-                        "DesiredEC2Instances",
                         "EC2InstanceType",
-                        "Name",
-                        "ServerLaunchPath"
+                        "Name"
                     ],
                     "type": "object"
                 },
@@ -27360,6 +27813,18 @@ var CloudformationSchema = `{
             "required": [
                 "Type",
                 "Properties"
+            ],
+            "type": "object"
+        },
+        "AWS::GameLift::Fleet.CertificateConfiguration": {
+            "additionalProperties": false,
+            "properties": {
+                "CertificateType": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "CertificateType"
             ],
             "type": "object"
         },
@@ -27384,6 +27849,55 @@ var CloudformationSchema = `{
                 "IpRange",
                 "Protocol",
                 "ToPort"
+            ],
+            "type": "object"
+        },
+        "AWS::GameLift::Fleet.ResourceCreationLimitPolicy": {
+            "additionalProperties": false,
+            "properties": {
+                "NewGameSessionsPerCreator": {
+                    "type": "number"
+                },
+                "PolicyPeriodInMinutes": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::GameLift::Fleet.RuntimeConfiguration": {
+            "additionalProperties": false,
+            "properties": {
+                "GameSessionActivationTimeoutSeconds": {
+                    "type": "number"
+                },
+                "MaxConcurrentGameSessionActivations": {
+                    "type": "number"
+                },
+                "ServerProcesses": {
+                    "items": {
+                        "$ref": "#/definitions/AWS::GameLift::Fleet.ServerProcess"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::GameLift::Fleet.ServerProcess": {
+            "additionalProperties": false,
+            "properties": {
+                "ConcurrentExecutions": {
+                    "type": "number"
+                },
+                "LaunchPath": {
+                    "type": "string"
+                },
+                "Parameters": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ConcurrentExecutions",
+                "LaunchPath"
             ],
             "type": "object"
         },
@@ -27712,7 +28226,6 @@ var CloudformationSchema = `{
                         }
                     },
                     "required": [
-                        "DatabaseName",
                         "Role",
                         "Targets"
                     ],
@@ -27729,6 +28242,30 @@ var CloudformationSchema = `{
                 "Type",
                 "Properties"
             ],
+            "type": "object"
+        },
+        "AWS::Glue::Crawler.CatalogTarget": {
+            "additionalProperties": false,
+            "properties": {
+                "DatabaseName": {
+                    "type": "string"
+                },
+                "Tables": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::Glue::Crawler.DynamoDBTarget": {
+            "additionalProperties": false,
+            "properties": {
+                "Path": {
+                    "type": "string"
+                }
+            },
             "type": "object"
         },
         "AWS::Glue::Crawler.JdbcTarget": {
@@ -27788,6 +28325,18 @@ var CloudformationSchema = `{
         "AWS::Glue::Crawler.Targets": {
             "additionalProperties": false,
             "properties": {
+                "CatalogTargets": {
+                    "items": {
+                        "$ref": "#/definitions/AWS::Glue::Crawler.CatalogTarget"
+                    },
+                    "type": "array"
+                },
+                "DynamoDBTargets": {
+                    "items": {
+                        "$ref": "#/definitions/AWS::Glue::Crawler.DynamoDBTarget"
+                    },
+                    "type": "array"
+                },
                 "JdbcTargets": {
                     "items": {
                         "$ref": "#/definitions/AWS::Glue::Crawler.JdbcTarget"
@@ -38608,6 +39157,224 @@ var CloudformationSchema = `{
             ],
             "type": "object"
         },
+        "AWS::MediaConvert::JobTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "DeletionPolicy": {
+                    "enum": [
+                        "Delete",
+                        "Retain",
+                        "Snapshot"
+                    ],
+                    "type": "string"
+                },
+                "DependsOn": {
+                    "anyOf": [
+                        {
+                            "pattern": "^[a-zA-Z0-9]+$",
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "pattern": "^[a-zA-Z0-9]+$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "Metadata": {
+                    "type": "object"
+                },
+                "Properties": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "AccelerationSettings": {
+                            "$ref": "#/definitions/AWS::MediaConvert::JobTemplate.AccelerationSettings"
+                        },
+                        "Category": {
+                            "type": "string"
+                        },
+                        "Description": {
+                            "type": "string"
+                        },
+                        "Name": {
+                            "type": "string"
+                        },
+                        "Priority": {
+                            "type": "number"
+                        },
+                        "Queue": {
+                            "type": "string"
+                        },
+                        "SettingsJson": {
+                            "type": "object"
+                        },
+                        "StatusUpdateInterval": {
+                            "type": "string"
+                        },
+                        "Tags": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "SettingsJson"
+                    ],
+                    "type": "object"
+                },
+                "Type": {
+                    "enum": [
+                        "AWS::MediaConvert::JobTemplate"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type",
+                "Properties"
+            ],
+            "type": "object"
+        },
+        "AWS::MediaConvert::JobTemplate.AccelerationSettings": {
+            "additionalProperties": false,
+            "properties": {
+                "Mode": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Mode"
+            ],
+            "type": "object"
+        },
+        "AWS::MediaConvert::Preset": {
+            "additionalProperties": false,
+            "properties": {
+                "DeletionPolicy": {
+                    "enum": [
+                        "Delete",
+                        "Retain",
+                        "Snapshot"
+                    ],
+                    "type": "string"
+                },
+                "DependsOn": {
+                    "anyOf": [
+                        {
+                            "pattern": "^[a-zA-Z0-9]+$",
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "pattern": "^[a-zA-Z0-9]+$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "Metadata": {
+                    "type": "object"
+                },
+                "Properties": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "Category": {
+                            "type": "string"
+                        },
+                        "Description": {
+                            "type": "string"
+                        },
+                        "Name": {
+                            "type": "string"
+                        },
+                        "SettingsJson": {
+                            "type": "object"
+                        },
+                        "Tags": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "SettingsJson"
+                    ],
+                    "type": "object"
+                },
+                "Type": {
+                    "enum": [
+                        "AWS::MediaConvert::Preset"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type",
+                "Properties"
+            ],
+            "type": "object"
+        },
+        "AWS::MediaConvert::Queue": {
+            "additionalProperties": false,
+            "properties": {
+                "DeletionPolicy": {
+                    "enum": [
+                        "Delete",
+                        "Retain",
+                        "Snapshot"
+                    ],
+                    "type": "string"
+                },
+                "DependsOn": {
+                    "anyOf": [
+                        {
+                            "pattern": "^[a-zA-Z0-9]+$",
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "pattern": "^[a-zA-Z0-9]+$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "Metadata": {
+                    "type": "object"
+                },
+                "Properties": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "Description": {
+                            "type": "string"
+                        },
+                        "Name": {
+                            "type": "string"
+                        },
+                        "PricingPlan": {
+                            "type": "string"
+                        },
+                        "Status": {
+                            "type": "string"
+                        },
+                        "Tags": {
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                },
+                "Type": {
+                    "enum": [
+                        "AWS::MediaConvert::Queue"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type"
+            ],
+            "type": "object"
+        },
         "AWS::MediaLive::Channel": {
             "additionalProperties": false,
             "properties": {
@@ -41996,6 +42763,73 @@ var CloudformationSchema = `{
             ],
             "type": "object"
         },
+        "AWS::Pinpoint::EmailTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "DeletionPolicy": {
+                    "enum": [
+                        "Delete",
+                        "Retain",
+                        "Snapshot"
+                    ],
+                    "type": "string"
+                },
+                "DependsOn": {
+                    "anyOf": [
+                        {
+                            "pattern": "^[a-zA-Z0-9]+$",
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "pattern": "^[a-zA-Z0-9]+$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "Metadata": {
+                    "type": "object"
+                },
+                "Properties": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "HtmlPart": {
+                            "type": "string"
+                        },
+                        "Subject": {
+                            "type": "string"
+                        },
+                        "Tags": {
+                            "type": "object"
+                        },
+                        "TemplateName": {
+                            "type": "string"
+                        },
+                        "TextPart": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Subject",
+                        "TemplateName"
+                    ],
+                    "type": "object"
+                },
+                "Type": {
+                    "enum": [
+                        "AWS::Pinpoint::EmailTemplate"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type",
+                "Properties"
+            ],
+            "type": "object"
+        },
         "AWS::Pinpoint::EventStream": {
             "additionalProperties": false,
             "properties": {
@@ -42117,6 +42951,153 @@ var CloudformationSchema = `{
                 "Type",
                 "Properties"
             ],
+            "type": "object"
+        },
+        "AWS::Pinpoint::PushTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "DeletionPolicy": {
+                    "enum": [
+                        "Delete",
+                        "Retain",
+                        "Snapshot"
+                    ],
+                    "type": "string"
+                },
+                "DependsOn": {
+                    "anyOf": [
+                        {
+                            "pattern": "^[a-zA-Z0-9]+$",
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "pattern": "^[a-zA-Z0-9]+$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "Metadata": {
+                    "type": "object"
+                },
+                "Properties": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "ADM": {
+                            "$ref": "#/definitions/AWS::Pinpoint::PushTemplate.AndroidPushNotificationTemplate"
+                        },
+                        "APNS": {
+                            "$ref": "#/definitions/AWS::Pinpoint::PushTemplate.APNSPushNotificationTemplate"
+                        },
+                        "Baidu": {
+                            "$ref": "#/definitions/AWS::Pinpoint::PushTemplate.AndroidPushNotificationTemplate"
+                        },
+                        "Default": {
+                            "$ref": "#/definitions/AWS::Pinpoint::PushTemplate.DefaultPushNotificationTemplate"
+                        },
+                        "GCM": {
+                            "$ref": "#/definitions/AWS::Pinpoint::PushTemplate.AndroidPushNotificationTemplate"
+                        },
+                        "Tags": {
+                            "type": "object"
+                        },
+                        "TemplateName": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "TemplateName"
+                    ],
+                    "type": "object"
+                },
+                "Type": {
+                    "enum": [
+                        "AWS::Pinpoint::PushTemplate"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type",
+                "Properties"
+            ],
+            "type": "object"
+        },
+        "AWS::Pinpoint::PushTemplate.APNSPushNotificationTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "Action": {
+                    "type": "string"
+                },
+                "Body": {
+                    "type": "string"
+                },
+                "MediaUrl": {
+                    "type": "string"
+                },
+                "Sound": {
+                    "type": "string"
+                },
+                "Title": {
+                    "type": "string"
+                },
+                "Url": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::Pinpoint::PushTemplate.AndroidPushNotificationTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "Action": {
+                    "type": "string"
+                },
+                "Body": {
+                    "type": "string"
+                },
+                "ImageIconUrl": {
+                    "type": "string"
+                },
+                "ImageUrl": {
+                    "type": "string"
+                },
+                "SmallImageIconUrl": {
+                    "type": "string"
+                },
+                "Sound": {
+                    "type": "string"
+                },
+                "Title": {
+                    "type": "string"
+                },
+                "Url": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "AWS::Pinpoint::PushTemplate.DefaultPushNotificationTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "Action": {
+                    "type": "string"
+                },
+                "Body": {
+                    "type": "string"
+                },
+                "Sound": {
+                    "type": "string"
+                },
+                "Title": {
+                    "type": "string"
+                },
+                "Url": {
+                    "type": "string"
+                }
+            },
             "type": "object"
         },
         "AWS::Pinpoint::SMSChannel": {
@@ -42447,6 +43428,67 @@ var CloudformationSchema = `{
             },
             "required": [
                 "Id"
+            ],
+            "type": "object"
+        },
+        "AWS::Pinpoint::SmsTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "DeletionPolicy": {
+                    "enum": [
+                        "Delete",
+                        "Retain",
+                        "Snapshot"
+                    ],
+                    "type": "string"
+                },
+                "DependsOn": {
+                    "anyOf": [
+                        {
+                            "pattern": "^[a-zA-Z0-9]+$",
+                            "type": "string"
+                        },
+                        {
+                            "items": {
+                                "pattern": "^[a-zA-Z0-9]+$",
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    ]
+                },
+                "Metadata": {
+                    "type": "object"
+                },
+                "Properties": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "Body": {
+                            "type": "string"
+                        },
+                        "Tags": {
+                            "type": "object"
+                        },
+                        "TemplateName": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Body",
+                        "TemplateName"
+                    ],
+                    "type": "object"
+                },
+                "Type": {
+                    "enum": [
+                        "AWS::Pinpoint::SmsTemplate"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type",
+                "Properties"
             ],
             "type": "object"
         },
@@ -43253,9 +44295,6 @@ var CloudformationSchema = `{
                 },
                 "RoleArn": {
                     "type": "string"
-                },
-                "Status": {
-                    "type": "string"
                 }
             },
             "required": [
@@ -43575,9 +44614,6 @@ var CloudformationSchema = `{
                     "type": "string"
                 },
                 "RoleArn": {
-                    "type": "string"
-                },
-                "Status": {
                     "type": "string"
                 }
             },
@@ -47566,6 +48602,12 @@ var CloudformationSchema = `{
                         "Subscription": {
                             "items": {
                                 "$ref": "#/definitions/AWS::SNS::Topic.Subscription"
+                            },
+                            "type": "array"
+                        },
+                        "Tags": {
+                            "items": {
+                                "$ref": "#/definitions/Tag"
                             },
                             "type": "array"
                         },
@@ -53748,6 +54790,9 @@ var CloudformationSchema = `{
                             "$ref": "#/definitions/AWS::CodeStar::GitHubRepository"
                         },
                         {
+                            "$ref": "#/definitions/AWS::CodeStarNotifications::NotificationRule"
+                        },
+                        {
                             "$ref": "#/definitions/AWS::Cognito::IdentityPool"
                         },
                         {
@@ -54420,6 +55465,15 @@ var CloudformationSchema = `{
                             "$ref": "#/definitions/AWS::ManagedBlockchain::Node"
                         },
                         {
+                            "$ref": "#/definitions/AWS::MediaConvert::JobTemplate"
+                        },
+                        {
+                            "$ref": "#/definitions/AWS::MediaConvert::Preset"
+                        },
+                        {
+                            "$ref": "#/definitions/AWS::MediaConvert::Queue"
+                        },
+                        {
                             "$ref": "#/definitions/AWS::MediaLive::Channel"
                         },
                         {
@@ -54501,16 +55555,25 @@ var CloudformationSchema = `{
                             "$ref": "#/definitions/AWS::Pinpoint::EmailChannel"
                         },
                         {
+                            "$ref": "#/definitions/AWS::Pinpoint::EmailTemplate"
+                        },
+                        {
                             "$ref": "#/definitions/AWS::Pinpoint::EventStream"
                         },
                         {
                             "$ref": "#/definitions/AWS::Pinpoint::GCMChannel"
                         },
                         {
+                            "$ref": "#/definitions/AWS::Pinpoint::PushTemplate"
+                        },
+                        {
                             "$ref": "#/definitions/AWS::Pinpoint::SMSChannel"
                         },
                         {
                             "$ref": "#/definitions/AWS::Pinpoint::Segment"
+                        },
+                        {
+                            "$ref": "#/definitions/AWS::Pinpoint::SmsTemplate"
                         },
                         {
                             "$ref": "#/definitions/AWS::Pinpoint::VoiceChannel"
