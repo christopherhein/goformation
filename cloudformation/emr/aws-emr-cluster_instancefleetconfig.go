@@ -41,6 +41,19 @@ type Cluster_InstanceFleetConfig struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *Cluster_InstanceFleetConfig) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *Cluster_InstanceFleetConfig) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -60,15 +73,15 @@ func (r *Cluster_InstanceFleetConfig) SetDependsOn(dependencies []string) {
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *Cluster_InstanceFleetConfig) Metadata() map[string]interface{} {
+func (r *Cluster_InstanceFleetConfig) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *Cluster_InstanceFleetConfig) SetMetadata(metadata map[string]interface{}) {
+func (r *Cluster_InstanceFleetConfig) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

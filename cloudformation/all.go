@@ -28,6 +28,7 @@ import (
 	"github.com/awslabs/goformation/v3/cloudformation/codedeploy"
 	"github.com/awslabs/goformation/v3/cloudformation/codepipeline"
 	"github.com/awslabs/goformation/v3/cloudformation/codestar"
+	"github.com/awslabs/goformation/v3/cloudformation/codestarnotifications"
 	"github.com/awslabs/goformation/v3/cloudformation/cognito"
 	"github.com/awslabs/goformation/v3/cloudformation/config"
 	"github.com/awslabs/goformation/v3/cloudformation/datapipeline"
@@ -70,6 +71,7 @@ import (
 	"github.com/awslabs/goformation/v3/cloudformation/lambda"
 	"github.com/awslabs/goformation/v3/cloudformation/logs"
 	"github.com/awslabs/goformation/v3/cloudformation/managedblockchain"
+	"github.com/awslabs/goformation/v3/cloudformation/mediaconvert"
 	"github.com/awslabs/goformation/v3/cloudformation/medialive"
 	"github.com/awslabs/goformation/v3/cloudformation/mediastore"
 	"github.com/awslabs/goformation/v3/cloudformation/msk"
@@ -201,6 +203,7 @@ func AllResources() map[string]Resource {
 		"AWS::CodePipeline::Pipeline":                                 &codepipeline.Pipeline{},
 		"AWS::CodePipeline::Webhook":                                  &codepipeline.Webhook{},
 		"AWS::CodeStar::GitHubRepository":                             &codestar.GitHubRepository{},
+		"AWS::CodeStarNotifications::NotificationRule":                &codestarnotifications.NotificationRule{},
 		"AWS::Cognito::IdentityPool":                                  &cognito.IdentityPool{},
 		"AWS::Cognito::IdentityPoolRoleAttachment":                    &cognito.IdentityPoolRoleAttachment{},
 		"AWS::Cognito::UserPool":                                      &cognito.UserPool{},
@@ -425,6 +428,9 @@ func AllResources() map[string]Resource {
 		"AWS::MSK::Cluster":                                           &msk.Cluster{},
 		"AWS::ManagedBlockchain::Member":                              &managedblockchain.Member{},
 		"AWS::ManagedBlockchain::Node":                                &managedblockchain.Node{},
+		"AWS::MediaConvert::JobTemplate":                              &mediaconvert.JobTemplate{},
+		"AWS::MediaConvert::Preset":                                   &mediaconvert.Preset{},
+		"AWS::MediaConvert::Queue":                                    &mediaconvert.Queue{},
 		"AWS::MediaLive::Channel":                                     &medialive.Channel{},
 		"AWS::MediaLive::Input":                                       &medialive.Input{},
 		"AWS::MediaLive::InputSecurityGroup":                          &medialive.InputSecurityGroup{},
@@ -452,10 +458,13 @@ func AllResources() map[string]Resource {
 		"AWS::Pinpoint::BaiduChannel":                                 &pinpoint.BaiduChannel{},
 		"AWS::Pinpoint::Campaign":                                     &pinpoint.Campaign{},
 		"AWS::Pinpoint::EmailChannel":                                 &pinpoint.EmailChannel{},
+		"AWS::Pinpoint::EmailTemplate":                                &pinpoint.EmailTemplate{},
 		"AWS::Pinpoint::EventStream":                                  &pinpoint.EventStream{},
 		"AWS::Pinpoint::GCMChannel":                                   &pinpoint.GCMChannel{},
+		"AWS::Pinpoint::PushTemplate":                                 &pinpoint.PushTemplate{},
 		"AWS::Pinpoint::SMSChannel":                                   &pinpoint.SMSChannel{},
 		"AWS::Pinpoint::Segment":                                      &pinpoint.Segment{},
+		"AWS::Pinpoint::SmsTemplate":                                  &pinpoint.SmsTemplate{},
 		"AWS::Pinpoint::VoiceChannel":                                 &pinpoint.VoiceChannel{},
 		"AWS::PinpointEmail::ConfigurationSet":                        &pinpointemail.ConfigurationSet{},
 		"AWS::PinpointEmail::ConfigurationSetEventDestination":        &pinpointemail.ConfigurationSetEventDestination{},
@@ -2829,6 +2838,30 @@ func (t *Template) GetCodeStarGitHubRepositoryWithName(name string) (*codestar.G
 		}
 	}
 	return nil, fmt.Errorf("resource %q of type codestar.GitHubRepository not found", name)
+}
+
+// GetAllCodeStarNotificationsNotificationRuleResources retrieves all codestarnotifications.NotificationRule items from an AWS CloudFormation template
+func (t *Template) GetAllCodeStarNotificationsNotificationRuleResources() map[string]*codestarnotifications.NotificationRule {
+	results := map[string]*codestarnotifications.NotificationRule{}
+	for name, untyped := range t.Resources {
+		switch resource := untyped.(type) {
+		case *codestarnotifications.NotificationRule:
+			results[name] = resource
+		}
+	}
+	return results
+}
+
+// GetCodeStarNotificationsNotificationRuleWithName retrieves all codestarnotifications.NotificationRule items from an AWS CloudFormation template
+// whose logical ID matches the provided name. Returns an error if not found.
+func (t *Template) GetCodeStarNotificationsNotificationRuleWithName(name string) (*codestarnotifications.NotificationRule, error) {
+	if untyped, ok := t.Resources[name]; ok {
+		switch resource := untyped.(type) {
+		case *codestarnotifications.NotificationRule:
+			return resource, nil
+		}
+	}
+	return nil, fmt.Errorf("resource %q of type codestarnotifications.NotificationRule not found", name)
 }
 
 // GetAllCognitoIdentityPoolResources retrieves all cognito.IdentityPool items from an AWS CloudFormation template
@@ -8207,6 +8240,78 @@ func (t *Template) GetManagedBlockchainNodeWithName(name string) (*managedblockc
 	return nil, fmt.Errorf("resource %q of type managedblockchain.Node not found", name)
 }
 
+// GetAllMediaConvertJobTemplateResources retrieves all mediaconvert.JobTemplate items from an AWS CloudFormation template
+func (t *Template) GetAllMediaConvertJobTemplateResources() map[string]*mediaconvert.JobTemplate {
+	results := map[string]*mediaconvert.JobTemplate{}
+	for name, untyped := range t.Resources {
+		switch resource := untyped.(type) {
+		case *mediaconvert.JobTemplate:
+			results[name] = resource
+		}
+	}
+	return results
+}
+
+// GetMediaConvertJobTemplateWithName retrieves all mediaconvert.JobTemplate items from an AWS CloudFormation template
+// whose logical ID matches the provided name. Returns an error if not found.
+func (t *Template) GetMediaConvertJobTemplateWithName(name string) (*mediaconvert.JobTemplate, error) {
+	if untyped, ok := t.Resources[name]; ok {
+		switch resource := untyped.(type) {
+		case *mediaconvert.JobTemplate:
+			return resource, nil
+		}
+	}
+	return nil, fmt.Errorf("resource %q of type mediaconvert.JobTemplate not found", name)
+}
+
+// GetAllMediaConvertPresetResources retrieves all mediaconvert.Preset items from an AWS CloudFormation template
+func (t *Template) GetAllMediaConvertPresetResources() map[string]*mediaconvert.Preset {
+	results := map[string]*mediaconvert.Preset{}
+	for name, untyped := range t.Resources {
+		switch resource := untyped.(type) {
+		case *mediaconvert.Preset:
+			results[name] = resource
+		}
+	}
+	return results
+}
+
+// GetMediaConvertPresetWithName retrieves all mediaconvert.Preset items from an AWS CloudFormation template
+// whose logical ID matches the provided name. Returns an error if not found.
+func (t *Template) GetMediaConvertPresetWithName(name string) (*mediaconvert.Preset, error) {
+	if untyped, ok := t.Resources[name]; ok {
+		switch resource := untyped.(type) {
+		case *mediaconvert.Preset:
+			return resource, nil
+		}
+	}
+	return nil, fmt.Errorf("resource %q of type mediaconvert.Preset not found", name)
+}
+
+// GetAllMediaConvertQueueResources retrieves all mediaconvert.Queue items from an AWS CloudFormation template
+func (t *Template) GetAllMediaConvertQueueResources() map[string]*mediaconvert.Queue {
+	results := map[string]*mediaconvert.Queue{}
+	for name, untyped := range t.Resources {
+		switch resource := untyped.(type) {
+		case *mediaconvert.Queue:
+			results[name] = resource
+		}
+	}
+	return results
+}
+
+// GetMediaConvertQueueWithName retrieves all mediaconvert.Queue items from an AWS CloudFormation template
+// whose logical ID matches the provided name. Returns an error if not found.
+func (t *Template) GetMediaConvertQueueWithName(name string) (*mediaconvert.Queue, error) {
+	if untyped, ok := t.Resources[name]; ok {
+		switch resource := untyped.(type) {
+		case *mediaconvert.Queue:
+			return resource, nil
+		}
+	}
+	return nil, fmt.Errorf("resource %q of type mediaconvert.Queue not found", name)
+}
+
 // GetAllMediaLiveChannelResources retrieves all medialive.Channel items from an AWS CloudFormation template
 func (t *Template) GetAllMediaLiveChannelResources() map[string]*medialive.Channel {
 	results := map[string]*medialive.Channel{}
@@ -8855,6 +8960,30 @@ func (t *Template) GetPinpointEmailChannelWithName(name string) (*pinpoint.Email
 	return nil, fmt.Errorf("resource %q of type pinpoint.EmailChannel not found", name)
 }
 
+// GetAllPinpointEmailTemplateResources retrieves all pinpoint.EmailTemplate items from an AWS CloudFormation template
+func (t *Template) GetAllPinpointEmailTemplateResources() map[string]*pinpoint.EmailTemplate {
+	results := map[string]*pinpoint.EmailTemplate{}
+	for name, untyped := range t.Resources {
+		switch resource := untyped.(type) {
+		case *pinpoint.EmailTemplate:
+			results[name] = resource
+		}
+	}
+	return results
+}
+
+// GetPinpointEmailTemplateWithName retrieves all pinpoint.EmailTemplate items from an AWS CloudFormation template
+// whose logical ID matches the provided name. Returns an error if not found.
+func (t *Template) GetPinpointEmailTemplateWithName(name string) (*pinpoint.EmailTemplate, error) {
+	if untyped, ok := t.Resources[name]; ok {
+		switch resource := untyped.(type) {
+		case *pinpoint.EmailTemplate:
+			return resource, nil
+		}
+	}
+	return nil, fmt.Errorf("resource %q of type pinpoint.EmailTemplate not found", name)
+}
+
 // GetAllPinpointEventStreamResources retrieves all pinpoint.EventStream items from an AWS CloudFormation template
 func (t *Template) GetAllPinpointEventStreamResources() map[string]*pinpoint.EventStream {
 	results := map[string]*pinpoint.EventStream{}
@@ -8903,6 +9032,30 @@ func (t *Template) GetPinpointGCMChannelWithName(name string) (*pinpoint.GCMChan
 	return nil, fmt.Errorf("resource %q of type pinpoint.GCMChannel not found", name)
 }
 
+// GetAllPinpointPushTemplateResources retrieves all pinpoint.PushTemplate items from an AWS CloudFormation template
+func (t *Template) GetAllPinpointPushTemplateResources() map[string]*pinpoint.PushTemplate {
+	results := map[string]*pinpoint.PushTemplate{}
+	for name, untyped := range t.Resources {
+		switch resource := untyped.(type) {
+		case *pinpoint.PushTemplate:
+			results[name] = resource
+		}
+	}
+	return results
+}
+
+// GetPinpointPushTemplateWithName retrieves all pinpoint.PushTemplate items from an AWS CloudFormation template
+// whose logical ID matches the provided name. Returns an error if not found.
+func (t *Template) GetPinpointPushTemplateWithName(name string) (*pinpoint.PushTemplate, error) {
+	if untyped, ok := t.Resources[name]; ok {
+		switch resource := untyped.(type) {
+		case *pinpoint.PushTemplate:
+			return resource, nil
+		}
+	}
+	return nil, fmt.Errorf("resource %q of type pinpoint.PushTemplate not found", name)
+}
+
 // GetAllPinpointSMSChannelResources retrieves all pinpoint.SMSChannel items from an AWS CloudFormation template
 func (t *Template) GetAllPinpointSMSChannelResources() map[string]*pinpoint.SMSChannel {
 	results := map[string]*pinpoint.SMSChannel{}
@@ -8949,6 +9102,30 @@ func (t *Template) GetPinpointSegmentWithName(name string) (*pinpoint.Segment, e
 		}
 	}
 	return nil, fmt.Errorf("resource %q of type pinpoint.Segment not found", name)
+}
+
+// GetAllPinpointSmsTemplateResources retrieves all pinpoint.SmsTemplate items from an AWS CloudFormation template
+func (t *Template) GetAllPinpointSmsTemplateResources() map[string]*pinpoint.SmsTemplate {
+	results := map[string]*pinpoint.SmsTemplate{}
+	for name, untyped := range t.Resources {
+		switch resource := untyped.(type) {
+		case *pinpoint.SmsTemplate:
+			results[name] = resource
+		}
+	}
+	return results
+}
+
+// GetPinpointSmsTemplateWithName retrieves all pinpoint.SmsTemplate items from an AWS CloudFormation template
+// whose logical ID matches the provided name. Returns an error if not found.
+func (t *Template) GetPinpointSmsTemplateWithName(name string) (*pinpoint.SmsTemplate, error) {
+	if untyped, ok := t.Resources[name]; ok {
+		switch resource := untyped.(type) {
+		case *pinpoint.SmsTemplate:
+			return resource, nil
+		}
+	}
+	return nil, fmt.Errorf("resource %q of type pinpoint.SmsTemplate not found", name)
 }
 
 // GetAllPinpointVoiceChannelResources retrieves all pinpoint.VoiceChannel items from an AWS CloudFormation template

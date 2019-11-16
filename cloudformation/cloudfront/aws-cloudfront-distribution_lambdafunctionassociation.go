@@ -26,6 +26,19 @@ type Distribution_LambdaFunctionAssociation struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *Distribution_LambdaFunctionAssociation) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *Distribution_LambdaFunctionAssociation) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -45,15 +58,15 @@ func (r *Distribution_LambdaFunctionAssociation) SetDependsOn(dependencies []str
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *Distribution_LambdaFunctionAssociation) Metadata() map[string]interface{} {
+func (r *Distribution_LambdaFunctionAssociation) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *Distribution_LambdaFunctionAssociation) SetMetadata(metadata map[string]interface{}) {
+func (r *Distribution_LambdaFunctionAssociation) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 

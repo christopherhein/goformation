@@ -89,7 +89,7 @@ var _ = Describe("Resource", func() {
 				resource := &s3.Bucket{
 					BucketName: "MyBucket",
 				}
-				resource.SetMetadata(map[string]interface{}{"Object1": "Location1", "Object2": "Location2"})
+				resource.SetCoreMetadata(map[string]interface{}{"Object1": "Location1", "Object2": "Location2"})
 
 				expected := []byte(`{"Type":"AWS::S3::Bucket","Properties":{"BucketName":"MyBucket"},"Metadata":{"Object1":"Location1","Object2":"Location2"}}`)
 
@@ -128,7 +128,7 @@ var _ = Describe("Resource", func() {
 				expected := &s3.Bucket{
 					BucketName: "MyBucket",
 				}
-				expected.SetMetadata(map[string]interface{}{"Object1": "Location1", "Object2": "Location2"})
+				expected.SetCoreMetadata(map[string]interface{}{"Object1": "Location1", "Object2": "Location2"})
 
 				result := &s3.Bucket{}
 				err := json.Unmarshal(property, result)

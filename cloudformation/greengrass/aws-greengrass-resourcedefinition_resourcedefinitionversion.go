@@ -21,6 +21,19 @@ type ResourceDefinition_ResourceDefinitionVersion struct {
 
 	// _metadata stores structured data associated with this resource
 	_metadata map[string]interface{}
+
+	// _resourceCondition stores the logical ID of the condition that must be satisfied for this resource to be created
+	_resourceCondition string
+}
+
+// Condition returns the logical ID of the condition that must be satisfied for this resource to be created
+func (r *ResourceDefinition_ResourceDefinitionVersion) ResourceCondition() string {
+	return r._resourceCondition
+}
+
+// SetCondition specifies the logical ID of the condition that must be satisfied for this resource to be created
+func (r *ResourceDefinition_ResourceDefinitionVersion) SetResourceCondition(condition string) {
+	r._resourceCondition = condition
 }
 
 // AWSCloudFormationType returns the AWS CloudFormation resource type
@@ -40,15 +53,15 @@ func (r *ResourceDefinition_ResourceDefinitionVersion) SetDependsOn(dependencies
 	r._dependsOn = dependencies
 }
 
-// Metadata returns the metadata associated with this resource.
+// CoreMetadata returns the metadata associated with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *ResourceDefinition_ResourceDefinitionVersion) Metadata() map[string]interface{} {
+func (r *ResourceDefinition_ResourceDefinitionVersion) CoreMetadata() map[string]interface{} {
 	return r._metadata
 }
 
-// SetMetadata enables you to associate structured data with this resource.
+// SetCoreMetadata enables you to associate structured data with this resource.
 // see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-metadata.html
-func (r *ResourceDefinition_ResourceDefinitionVersion) SetMetadata(metadata map[string]interface{}) {
+func (r *ResourceDefinition_ResourceDefinitionVersion) SetCoreMetadata(metadata map[string]interface{}) {
 	r._metadata = metadata
 }
 
